@@ -16,7 +16,7 @@ public class Blog {
 
     private String content;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at",columnDefinition = "DATETIME")
     private LocalDateTime createdAt;
 
     @ManyToOne
