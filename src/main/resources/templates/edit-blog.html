@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Edit Blog</title>
+        <style>
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f5f6fa;
+              margin: 0;
+              padding: 0;
+            }
+
+            .container {
+              width: 500px;
+              margin: 50px auto;
+              background: #fff;
+              padding: 30px;
+              border-radius: 8px;
+              box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            }
+
+            h2 {
+              text-align: center;
+              color: #333;
+            }
+
+            input[type="text"],
+            textarea {
+              width: 100%;
+              padding: 10px;
+              margin-top: 10px;
+              margin-bottom: 20px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+            }
+
+            textarea {
+              height: 150px;
+              resize: none;
+            }
+
+            button {
+              width: 100%;
+              padding: 10px;
+              background-color: #007bff;
+              color: white;
+              border: none;
+              font-size: 16px;
+              border-radius: 5px;
+              cursor: pointer;
+            }
+
+            button:hover {
+              background-color: #0056b3;
+            }
+
+            .back-link {
+              text-align: center;
+              margin-top: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container" th:attr="data-blog-id=${blog.id}">
+            <h2>Edit Blog Post</h2>
+
+            <label>Title:</label>
+            <input type="text" id="title" th:value="${blog.title}" required />
+
+            <label>Content:</label>
+            <textarea id="content" rows="6" required th:text="${blog.content}"></textarea>
+
+            <button id="submit-edit">Update Blog</button>
+
+            <div class="back-link">
+                <a href="/home">← Back to Home</a>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById("submit-edit").addEventListener("click", () => {
+                const blogId = document.querySelector(".container").getAttribute("data-blog-id");
+                const title = document.getElementById("title").value.trim();
+                const content = document.getElementById("content").value.trim();
+
+                if (!title || !content) {
+                    alert("Title and content cannot be empty.");
+                    return;
+                }
+
+                fetch(`/edit-blog/${blogId}`, {
+                    method: "PATCH",
+                    headers:{
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        content: content
+                    })
+                }).then(res => {
+                    if(res.ok){
+                        window.location.href = "/home";
+                    } else{
+                        alert("Failed to update blog.");
+                    }
+                })
+            })
+        </script>
+    </body>
+</html>

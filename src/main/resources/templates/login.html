@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+        body {
+          font-family: Arial;
+          background: #f1f1f1;
+        }
+        .container {
+          width: 300px;
+          margin: 100px auto;
+          padding: 30px;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+          text-align: center;
+        }
+        input[type="text"],
+        input[type="password"] {
+          width: 100%;
+          padding: 10px;
+          margin-top: 8px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        button {
+          width: 100%;
+          padding: 10px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        button:hover {
+          background: #0056b3;
+        }
+        .link {
+          margin-top: 10px;
+          text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Login</h2>
+    <div th:if="${param.error}">
+        <p style="color: red; text-align: center">
+            Invalid username or password
+        </p>
+    </div>
+
+    <div th:if="${param.logout}">
+        <p style="color: green; text-align: center">
+            You have been successfully logged out
+        </p>
+    </div>
+
+    <form th:action="@{/authenticate}" method="post">
+        <label>Username:</label>
+        <input type="text" name="username" required />
+
+        <label>Password:</label>
+        <input type="password" name="password" required />
+
+        <button type="submit">Login</button>
+    </form>
+    <div class="link">
+        <p>Don't have an account? <a href="/register">Register</a></p>
+    </div>
+</div>
+</body>
+</html>

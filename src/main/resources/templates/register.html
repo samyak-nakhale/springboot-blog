@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+        body {
+          font-family: Arial;
+          background: #f9f9f9;
+        }
+        .container {
+          width: 300px;
+          margin: 100px auto;
+          padding: 30px;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+          text-align: center;
+        }
+        input[type="text"],
+        input[type="password"] {
+          width: 100%;
+          padding: 10px;
+          margin-top: 8px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        button {
+          width: 100%;
+          padding: 10px;
+          background: #28a745;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        button:hover {
+          background: #1e7e34;
+        }
+        .link {
+          margin-top: 10px;
+          text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Register</h2>
+    <div th:if="${param.exist}">
+        <p style="color: red">Username is already taken</p>
+    </div>
+<!--    <form th:action="@{/do-register}" method="post" th:object="${user}">-->
+<!--        <label>Username:</label>-->
+<!--        <input type="text" th:field="*{username}" required />-->
+
+<!--        <label>Password:</label>-->
+<!--        <input type="password" th:field="*{password}" required />-->
+
+<!--        <button type="submit">Register</button>-->
+<!--    </form>-->
+    <form th:action="@{/do-register}" method="post">
+        <label>Username:</label>
+        <input type="text" name="username" required />
+
+        <label>Password:</label>
+        <input type="password" name="password" required />
+
+        <button type="submit">Register</button>
+    </form>
+    <div class="link">
+        <p>Already registered? <a href="/login">Login</a></p>
+    </div>
+</div>
+</body>
+</html>

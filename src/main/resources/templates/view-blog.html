@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title th:text="${blog.title}">Blog Post</title>
+        <style>
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f5f6fa;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              width: 70%;
+              margin: 50px auto;
+              background: #fff;
+              padding: 30px;
+              border-radius: 10px;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+            .title {
+              font-size: 28px;
+              margin-bottom: 10px;
+            }
+            .meta {
+              font-size: 14px;
+              color: #666;
+              margin-bottom: 25px;
+            }
+            .content {
+              font-size: 18px;
+              line-height: 1.6;
+            }
+            .back-link {
+              display: block;
+              margin-top: 30px;
+              text-align: center;
+            }
+            .back-link a {
+              text-decoration: none;
+              color: #007bff;
+              font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container" th:attr="data-blog-id=${blog.id}">
+            <div class="title" th:text="${blog.title}">Blog Title</div>
+            <div class="meta">
+                By <span th:text="${blog.user.username}">Author</span> |
+                <span
+                        th:text="${#temporals.format(blog.createdAt, 'dd MMM yyyy HH:mm')}"
+                >Date</span
+                >
+            </div>
+            <div class="content" th:text="${blog.content}">
+
+            </div>
+
+            <div class="back-link">
+                <a href="/blogs">← Back to all blogs</a>
+            </div>
+        </div>
+
+        <hr style="margin: 40px 0" />
+        <h3>Comments</h3>
+        <!-- ✅ Add Comment Form -->
+        <div style="margin-top: 30px">
+            <label for="comment-content"><strong>Add a comment:</strong></label
+            ><br />
+            <textarea
+                    id="comment-content"
+                    rows="3"
+                    style="width: 100%; padding: 10px"
+                    required
+            ></textarea
+            ><br />
+            <button
+                    id="submit-comment"
+                    style="
+          margin-top: 10px;
+          padding: 8px 16px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+            >
+                Post Comment
+            </button>
+        </div>
+
+        <!-- ✅ List of Comments -->
+        <div id="comment-list">
+            <div th:if="${comments.size() == 0}">
+                <p>No comments yet. Be the first to comment!</p>
+            </div>
+
+            <div
+                    th:each="comment : ${comments}"
+                    class="comment"
+                    style="
+          margin-bottom: 20px;
+          padding: 10px;
+          border-bottom: 1px solid #ddd;
+        "
+            >
+                <p>
+                    <strong th:text="${comment.user.username}">Username</strong>:
+                    <span th:text="${comment.content}">Comment text</span>
+                </p>
+                <small
+                        th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}"
+                ></small>
+            </div>
+        </div>
+
+        <script>
+            const blogId = document.querySelector(".container").getAttribute("data-blog-id");
+            document
+              .getElementById("submit-comment")
+              .addEventListener("click", () => {
+                const content = document
+                  .getElementById("comment-content")
+                  .value.trim();
+                if (!content) {
+                  alert("Comment Cannot be empty");
+                  return;
+                }
+
+                fetch(`/blogs/${blogId}/comment`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ content: content }),
+                }).then((res) => {
+                  if (res.ok) {
+                    window.location.reload();
+                  } else {
+                    alert("Failed to post Comment");
+                  }
+                });
+              });
+        </script>
+    </body>
+</html>

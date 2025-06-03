@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>All Blogs</title>
+        <style>
+            body {
+              font-family: Arial;
+              background-color: #f5f5f5;
+            }
+            .container {
+              width: 80%;
+              margin: 40px auto;
+            }
+            .blog-card {
+              background: white;
+              padding: 20px;
+              border-radius: 8px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              margin-bottom: 20px;
+            }
+            .blog-card h2 {
+              margin-top: 0;
+            }
+            .meta {
+              font-size: 0.85em;
+              color: #777;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>All Blog Posts</h1>
+
+            <div
+                    th:each="blog : ${blogs}"
+                    class="blog-card"
+                    th:attr="data-id=${blog.id}"
+                    style="cursor: pointer"
+            >
+                <h2 th:text="${blog.title}"></h2>
+                <p th:text="${blog.content}"></p>
+                <div class="meta">
+                    By <span th:text="${blog.user.username}"></span> |
+                    <span
+                            th:text="${#temporals.format(blog.createdAt, 'dd MMM yyyy HH:mm')}"
+                    ></span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const cards = document.querySelectorAll(".blog-card");
+              cards.forEach((card) => {
+                card.addEventListener("click", () => {
+                  const blogId = card.getAttribute("data-id");
+                  window.location.href = `/blogs/${blogId}`;
+                });
+              });
+            });
+        </script>
+    </body>
+</html>

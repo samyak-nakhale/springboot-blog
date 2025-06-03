@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Post</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f5f6fa;
+          margin: 0;
+          padding: 0;
+        }
+        .container {
+          width: 500px;
+          margin: 50px auto;
+          background: #fff;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+          text-align: center;
+          color: #333;
+        }
+        input[type="text"],
+        textarea {
+          width: 100%;
+          padding: 10px;
+          margin-top: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+        }
+        textarea {
+          height: 150px;
+          resize: none;
+        }
+        button {
+          width: 100%;
+          padding: 10px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          font-size: 16px;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        button:hover {
+          background-color: #0056b3;
+        }
+        .back-link {
+          text-align: center;
+          margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Create a New Blog Post</h2>
+    <form id="blog-form" th:action="@{/post-blog}" method="post">
+        <label>Title:</label>
+        <input id="title" type="text" name="title" required />
+
+        <label>Content:</label>
+        <textarea id="content" name="content" required></textarea>
+
+        <button type="submit">Publish</button>
+    </form>
+
+    <div class="back-link">
+        <a href="/home">← Back to Home</a>
+    </div>
+</div>
+
+<script>
+    document.getElementById("blog-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const data = {
+        title: document.getElementById("title").value,
+        content: document.getElementById("content").value,
+      };
+
+      fetch("/post-blog", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => {
+        if (res.ok) {
+          window.location.href = "/home";
+        } else {
+          alert("Error submitting blog");
+        }
+      });
+    });
+</script>
+</body>
+</html>
